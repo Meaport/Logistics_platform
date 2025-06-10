@@ -1,0 +1,35 @@
+{
+  "name": "logistics-platform",
+  "version": "1.0.0",
+  "description": "Comprehensive logistics management platform built with Spring Boot microservices",
+  "main": "start-services.js",
+  "scripts": {
+    "start-services": "node start-services.js",
+    "test": "node test-runner.js",
+    "performance-test": "node performance-test.js",
+    "stress-test": "node stress-test.js",
+    "docker-up": "docker-compose up -d",
+    "docker-down": "docker-compose down",
+    "docker-logs": "docker-compose logs -f",
+    "health-check": "node -e \"const { exec } = require('child_process'); const services = [8080, 8081, 8082, 8083]; services.forEach(port => { exec('curl -s http://localhost:' + port + '/actuator/health', (err, stdout) => { console.log('Port ' + port + ':', err ? 'DOWN' : JSON.parse(stdout).status); }); });\""
+  },
+  "keywords": [
+    "logistics",
+    "microservices",
+    "spring-boot",
+    "java",
+    "transport",
+    "shipment"
+  ],
+  "author": "Logistics Platform Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/logistics-platform/logistics-platform.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
