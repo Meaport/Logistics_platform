@@ -3,18 +3,40 @@
 echo "🚂 RAILWAY DEPLOYMENT SETUP SCRIPT"
 echo "=================================="
 
-# Check if Railway CLI is installed
-if ! command -v railway &> /dev/null; then
-    echo "📦 Installing Railway CLI..."
-    npm install -g @railway/cli
-fi
+# Note: Railway CLI cannot be installed globally in WebContainer
+# Users will need to install it locally or use npx
+echo "⚠️  Note: Railway CLI needs to be installed locally due to WebContainer limitations"
+echo "📦 You can use Railway CLI by running: npx @railway/cli <command>"
+echo "    Or install locally: npm install @railway/cli"
 
-# Login to Railway
-echo "🔐 Logging into Railway..."
-railway login
+# Check if we're in the right directory (should have pom.xml)
+if [ ! -f "pom.xml" ]; then
+    echo "❌ Error: This script must be run from the project root directory"
+    echo "   Make sure you're in the directory containing pom.xml"
+    exit 1
+fi
 
 # Create railway.toml files for each service
 echo "📝 Creating Railway configuration files..."
+
+# Check if service directories exist
+services=("config-server" "discovery-server" "gateway-service" "auth-service" "user-service" "transport-service")
+missing_services=()
+
+for service in "${services[@]}"; do
+    if [ ! -d "$service" ]; then
+        missing_services+=("$service")
+    fi
+done
+
+if [ ${#missing_services[@]} -ne 0 ]; then
+    echo "❌ Error: The following service directories are missing:"
+    for service in "${missing_services[@]}"; do
+        echo "   - $service"
+    done
+    echo "   Please ensure all microservice directories exist"
+    exit 1
+fi
 
 # Config Server
 cat > config-server/railway.toml << 'EOF'
@@ -115,8 +137,21 @@ echo "📝 Adding Railway profiles to application.yml files..."
 add_railway_profile() {
     local service_dir=$1
     local port=$2
+    local app_yml_path="$service_dir/src/main/resources/application.yml"
     
-    cat >> "$service_dir/src/main/resources/application.yml" << EOF
+    # Check if application.yml exists
+    if [ ! -f "$app_yml_path" ]; then
+        echo "⚠️  Warning: $app_yml_path not found, skipping..."
+        return
+    fi
+    
+    # Check if railway profile already exists
+    if grep -q "on-profile: railway" "$app_yml_path"; then
+        echo "ℹ️  Railway profile already exists in $service_dir, skipping..."
+        return
+    fi
+    
+    cat >> "$app_yml_path" << EOF
 
 ---
 spring:
@@ -153,6 +188,8 @@ jwt:
   secret: \${JWT_SECRET:mySecretKey123456789012345678901234567890}
   expiration: 86400000
 EOF
+    
+    echo "✅ Added Railway profile to $service_dir"
 }
 
 # Add Railway profiles to each service
@@ -172,31 +209,53 @@ cat > deploy-to-railway.sh << 'EOF'
 echo "🚀 DEPLOYING TO RAILWAY..."
 echo "========================="
 
+# Check if Railway CLI is available
+if ! command -v railway &> /dev/null && ! command -v npx &> /dev/null; then
+    echo "❌ Error: Neither Railway CLI nor npx is available"
+    echo "   Please install Railway CLI: npm install @railway/cli"
+    exit 1
+fi
+
+# Use npx if railway command is not available
+RAILWAY_CMD="railway"
+if ! command -v railway &> /dev/null; then
+    RAILWAY_CMD="npx @railway/cli"
+    echo "ℹ️  Using npx to run Railway CLI"
+fi
+
 # Build all services
 echo "🏗️ Building all services..."
 mvn clean package -DskipTests
+
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed. Please fix build errors before deploying."
+    exit 1
+fi
 
 # Deploy services in order
 services=("config-server" "discovery-server" "gateway-service" "auth-service" "user-service" "transport-service")
 
 for service in "${services[@]}"; do
     echo "🚂 Deploying $service..."
-    cd "$service"
-    railway up --detach
-    cd ..
-    echo "✅ $service deployed!"
-    sleep 30  # Wait for service to start
+    if [ -d "$service" ]; then
+        cd "$service"
+        $RAILWAY_CMD up --detach
+        if [ $? -eq 0 ]; then
+            echo "✅ $service deployed!"
+        else
+            echo "❌ Failed to deploy $service"
+        fi
+        cd ..
+        sleep 30  # Wait for service to start
+    else
+        echo "⚠️  Directory $service not found, skipping..."
+    fi
 done
 
-echo "🎉 All services deployed to Railway!"
+echo "🎉 Deployment process completed!"
 echo ""
-echo "🌐 Your services will be available at:"
-echo "   Config Server: https://config-server-production.railway.app"
-echo "   Discovery Server: https://discovery-server-production.railway.app"
-echo "   Gateway Service: https://gateway-service-production.railway.app"
-echo "   Auth Service: https://auth-service-production.railway.app"
-echo "   User Service: https://user-service-production.railway.app"
-echo "   Transport Service: https://transport-service-production.railway.app"
+echo "🌐 Your services should be available at Railway-generated URLs"
+echo "   Check your Railway dashboard for the actual URLs"
 EOF
 
 chmod +x deploy-to-railway.sh
@@ -205,13 +264,16 @@ echo ""
 echo "🎉 Railway setup completed!"
 echo ""
 echo "📋 Next steps:"
-echo "1. Set up your Supabase environment variables in Railway dashboard"
-echo "2. Run: ./deploy-to-railway.sh"
-echo "3. Test your deployed services"
+echo "1. Install Railway CLI locally: npm install @railway/cli"
+echo "2. Login to Railway: npx @railway/cli login"
+echo "3. Set up your database environment variables in Railway dashboard"
+echo "4. Run: ./deploy-to-railway.sh"
+echo "5. Test your deployed services"
 echo ""
-echo "🔗 Important URLs to configure in Railway:"
+echo "🔗 Important environment variables to set in Railway:"
 echo "   DATABASE_URL: [Your Supabase connection string]"
+echo "   DATABASE_PASSWORD: [Your database password]"
 echo "   JWT_SECRET: [Strong secret key]"
-echo "   EUREKA_DEFAULT_ZONE: https://discovery-server-production.railway.app/eureka/"
+echo "   EUREKA_DEFAULT_ZONE: [Discovery server URL after deployment]"
 echo ""
 echo "🚂 Ready for Railway deployment!"
