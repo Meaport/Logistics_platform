@@ -77,22 +77,21 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- PDF Generation - Fixed iText dependencies -->
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itext-core</artifactId>
-            <version>8.0.2</version>
-            <type>pom</type>
-        </dependency>
+        <!-- PDF Generation - Using iText 7 with correct artifacts -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>kernel</artifactId>
-            <version>8.0.2</version>
+            <version>7.2.5</version>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>layout</artifactId>
-            <version>8.0.2</version>
+            <version>7.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>7.2.5</version>
         </dependency>
 
         <!-- Excel Generation -->
