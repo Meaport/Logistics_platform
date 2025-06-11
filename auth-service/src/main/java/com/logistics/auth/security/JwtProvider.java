@@ -3,7 +3,8 @@ package com.logistics.auth.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +26,9 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  */
 @Component
-@Slf4j
 public class JwtProvider {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtProvider.class);
 
     @Value("${jwt.secret}")
     private String jwtSecret;
