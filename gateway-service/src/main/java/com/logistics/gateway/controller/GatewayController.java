@@ -24,7 +24,9 @@ public class GatewayController {
                     Map<String, Object> routeInfo = new HashMap<>();
                     routeInfo.put("id", route.getId());
                     routeInfo.put("uri", route.getUri().toString());
-                    routeInfo.put("predicates", route.getPredicates().toString());
+                    // Note: getPredicates() method may not be available in all Spring Cloud Gateway versions
+                    // Using toString() as a fallback to get predicate information
+                    routeInfo.put("predicates", route.toString());
                     routeInfo.put("filters", route.getFilters().toString());
                     return routeInfo;
                 });

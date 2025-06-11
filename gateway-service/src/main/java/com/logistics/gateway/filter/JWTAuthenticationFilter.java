@@ -181,16 +181,17 @@ public class JWTAuthenticationFilter implements GlobalFilter, Ordered {
 
         try {
             String jsonResponse = objectMapper.writeValueAsString(errorResponse);
-            DataBuffer buffer = response.bufferFactory().wrap(jsonResponse.getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = response.bufferFactory().wrap(bytes);
             
             // Log authentication failure
             logAuthenticationFailure(exchange.getRequest(), message);
             
             return response.writeWith(Mono.just(buffer));
         } catch (JsonProcessingException e) {
-            DataBuffer buffer = response.bufferFactory().wrap(
-                "{\"success\":false,\"error\":\"Authentication Failed\",\"message\":\"" + message + "\"}"
-                .getBytes(StandardCharsets.UTF_8));
+            String fallbackResponse = "{\"success\":false,\"error\":\"Authentication Failed\",\"message\":\"" + message + "\"}";
+            byte[] bytes = fallbackResponse.getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = response.bufferFactory().wrap(bytes);
             return response.writeWith(Mono.just(buffer));
         }
     }
