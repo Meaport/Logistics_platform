@@ -3,23 +3,12 @@
 echo "🔧 RAILWAY ENVIRONMENT VARIABLES SETUP"
 echo "======================================"
 
-# Check if Railway CLI is available
-if ! command -v railway &> /dev/null && ! command -v npx &> /dev/null; then
-    echo "❌ Error: Neither Railway CLI nor npx is available"
-    exit 1
-fi
-
-RAILWAY_CMD="railway"
-if ! command -v railway &> /dev/null; then
-    RAILWAY_CMD="npx @railway/cli"
-fi
+# Generate a strong JWT secret
+JWT_SECRET=$(openssl rand -base64 64 | tr -d '\n' 2>/dev/null || echo "mySecretKey123456789012345678901234567890")
 
 echo "⚠️  IMPORTANT: You need to set environment variables manually in Railway Dashboard"
 echo "   This script will show you what variables to set for each service."
 echo ""
-
-# Generate a strong JWT secret
-JWT_SECRET=$(openssl rand -base64 64 | tr -d '\n' 2>/dev/null || echo "mySecretKey123456789012345678901234567890")
 
 echo "🔑 Generated JWT Secret (use this for all services):"
 echo "JWT_SECRET=$JWT_SECRET"

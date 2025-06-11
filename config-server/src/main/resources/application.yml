@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: config-server
+  config:
+    import: "configserver:http://localhost:8888"
   cloud:
     config:
       server:
@@ -11,6 +13,26 @@ spring:
           search-locations: classpath:/config
   profiles:
     active: native
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+
+---
+spring:
+  config:
+    activate:
+      on-profile: railway
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+
+server:
+  port: ${PORT:8888}
 
 management:
   endpoints:

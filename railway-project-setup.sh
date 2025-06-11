@@ -1,28 +1,20 @@
 #!/bin/bash
 
-echo "🚂 RAILWAY PROJECT SETUP - STEP 2"
-echo "================================="
+echo "🚂 RAILWAY PROJECT SETUP"
+echo "========================"
 
 # Check if Railway CLI is available
-if ! command -v railway > /dev/null 2>&1 && ! command -v npx > /dev/null 2>&1; then
-    echo "❌ Error: Neither Railway CLI nor npx is available"
-    echo "   Please install Railway CLI: npm install @railway/cli"
-    exit 1
-fi
-
-# Use npx if railway command is not available
-RAILWAY_CMD="railway"
-if ! command -v railway > /dev/null 2>&1; then
-    RAILWAY_CMD="npx @railway/cli"
-    echo "ℹ️  Using npx to run Railway CLI"
+if ! command -v railway &> /dev/null; then
+    echo "❌ Railway CLI not found. Installing..."
+    npm install -g @railway/cli
 fi
 
 echo "🔍 Checking Railway login status..."
-$RAILWAY_CMD whoami
+railway whoami
 
 if [ $? -ne 0 ]; then
     echo "❌ You are not logged in to Railway"
-    echo "   Please run: $RAILWAY_CMD login"
+    echo "   Please run: railway login"
     exit 1
 fi
 
@@ -42,13 +34,13 @@ for service in "${services[@]}"; do
         cd "$service"
         
         # Create new Railway project
-        $RAILWAY_CMD new --name "logistics-$service"
+        railway new --name "logistics-$service"
         
         if [ $? -eq 0 ]; then
             echo "✅ Project created for $service"
             
             # Link the project
-            $RAILWAY_CMD link
+            railway link
             
             echo "🔗 Project linked for $service"
         else
