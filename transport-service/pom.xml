@@ -77,23 +77,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- PDF Generation - Using iText 7 with correct artifacts -->
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>kernel</artifactId>
-            <version>7.2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>layout</artifactId>
-            <version>7.2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>io</artifactId>
-            <version>7.2.5</version>
-        </dependency>
-
         <!-- Excel Generation -->
         <dependency>
             <groupId>org.apache.poi</groupId>
