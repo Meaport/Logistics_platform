@@ -88,6 +88,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Lombok - ADDED -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Common Library -->
         <dependency>
             <groupId>com.logistics</groupId>
