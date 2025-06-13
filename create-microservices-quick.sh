@@ -5,6 +5,76 @@ cd /opt/logistics-platform
 echo "🚀 HIZLI MICROSERVICE OLUŞTURMA"
 echo "==============================="
 
+# Ana pom.xml dosyasını oluştur
+if [ ! -f "pom.xml" ]; then
+    echo "📦 Ana pom.xml oluşturuluyor..."
+    cat > pom.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.logistics</groupId>
+    <artifactId>logistics-platform</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>Logistics Platform</name>
+    <description>A scalable microservice-based logistics system</description>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>3.2.0</spring-boot.version>
+        <spring-cloud.version>2023.0.0</spring-cloud.version>
+    </properties>
+
+    <modules>
+        <module>config-server</module>
+        <module>discovery-server</module>
+        <module>gateway-service</module>
+        <module>auth-service</module>
+        <module>user-service</module>
+        <module>transport-service</module>
+        <module>common-lib</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+EOF
+    echo "✅ Ana pom.xml oluşturuldu"
+fi
+
 # Common Library
 if [ ! -d "common-lib" ]; then
     echo "📦 Common Library oluşturuluyor..."
@@ -995,4 +1065,7 @@ echo "   ✅ Gateway Service (8080)"
 echo "   ✅ Auth Service (8081)"
 echo "   ✅ User Service (8082)"
 echo "   ✅ Transport Service (8083)"
+echo ""
+echo "🚀 Şimdi deploy'u başlatın:"
+echo "   ./deploy.sh"
 echo ""
