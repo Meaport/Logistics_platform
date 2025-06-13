@@ -1,4 +1,4 @@
-FROM maven:3.9-openjdk-17 AS build
+FROM maven:3.9-amazoncorretto-17-debian AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
