@@ -261,7 +261,40 @@ echo ""
 EOF
 
 # 6. Execute permission verin
-chmod +x deploy.sh
+echo "🚀 Starting production deployment..."
+
+# Load environment variables
+set -a
+source .env.production
+set +a
+
+# Stop any running containers
+echo "🛑 Stopping existing containers..."
+docker-compose -f docker-compose.production.yml down
+
+# Remove old images to force rebuild
+echo "🧹 Cleaning up old images..."
+docker system prune -f
+
+# Build and start services
+echo "🏗️ Building and starting services..."
+docker-compose -f docker-compose.production.yml up -d --build
+
+# Wait for services to be ready
+echo "⏳ Waiting for services to be ready..."
+sleep 90
+
+echo "✅ Production deployment completed!"
+echo ""
+echo "🌐 Access URLs:"
+echo "   Main Application: http://209.38.244.176:8080"
+echo "   Discovery Server: http://209.38.244.176:8761"
+echo "   Config Server: http://209.38.244.176:8888"
+echo ""
+echo "📊 Monitoring:"
+echo "   Health: http://209.38.244.176:8080/actuator/health"
+echo ""
+EOF
 
 # 7. Şimdi deploy'u başlatın
 ./deploy.sh
