@@ -4,8 +4,8 @@ services:
   # Config Server
   config-server:
     build: 
-      context: ./config-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./config-server/Dockerfile
     container_name: logistics-config-server
     ports:
       - "8888:8888"
@@ -26,8 +26,8 @@ services:
   # Discovery Server
   discovery-server:
     build: 
-      context: ./discovery-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./discovery-server/Dockerfile
     container_name: logistics-discovery-server
     ports:
       - "8761:8761"
@@ -52,8 +52,8 @@ services:
   # Gateway Service
   gateway-service:
     build: 
-      context: ./gateway-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./gateway-service/Dockerfile
     container_name: logistics-gateway-service
     ports:
       - "8080:8080"
@@ -79,8 +79,8 @@ services:
   # Auth Service
   auth-service:
     build: 
-      context: ./auth-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./auth-service/Dockerfile
     container_name: logistics-auth-service
     ports:
       - "8081:8081"
@@ -113,8 +113,8 @@ services:
   # User Service
   user-service:
     build: 
-      context: ./user-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./user-service/Dockerfile
     container_name: logistics-user-service
     ports:
       - "8082:8082"
@@ -145,8 +145,8 @@ services:
   # Transport Service
   transport-service:
     build: 
-      context: ./transport-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./transport-service/Dockerfile
     container_name: logistics-transport-service
     ports:
       - "8083:8083"
