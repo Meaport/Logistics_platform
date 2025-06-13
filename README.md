@@ -1,34 +1,23 @@
-# 🚛 Modern Logistics Platform
+# 🚀 Yeni Proje
 
-Yeni nesil lojistik yönetim platformu - Sıfırdan inşa edildi.
+Sıfırdan başlıyoruz!
 
-## 🎯 Özellikler
+## 📋 Durum
 
-- ⚡ Hızlı ve modern arayüz
-- 🔐 Güvenli kimlik doğrulama
-- 📦 Kargo takip sistemi
-- 🚛 Araç yönetimi
-- 📊 Raporlama ve analitik
-- 🌐 RESTful API
+- ✅ Tüm eski dosyalar silindi
+- ✅ Proje dizini temizlendi  
+- ✅ Yeni başlangıç için hazır
 
-## 🚀 Hızlı Başlangıç
+## 🎯 Sonraki Adım
 
-```bash
-# Projeyi başlat
-./start.sh
+Ne yapmak istiyorsunuz? Lütfen belirtin:
 
-# Sağlık kontrolü
-./health-check.sh
-```
-
-## 📱 Demo
-
-- **Ana Site**: http://www.meaport.online
-- **API**: http://209.38.244.176:8080
-- **Dokümantasyon**: /docs
+1. **Web Uygulaması** - Modern web sitesi
+2. **API Servisi** - Backend API
+3. **Mobil Uygulama** - React Native
+4. **Desktop Uygulaması** - Electron
+5. **Başka bir şey** - Ne istediğinizi söyleyin
 
 ---
 
-**Geliştirici**: Logistics Platform Team  
-**Versiyon**: 2.0.0  
-**Tarih**: 2025
+**Hazırım!** 🚀
