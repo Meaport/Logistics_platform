@@ -45,18 +45,11 @@ echo "✅ Environment configuration loaded"
 
 echo "🏗️ Building Java microservices with Maven..."
 
-services=("config-server" "discovery-server" "gateway-service" "auth-service" "user-service" "transport-service")
-
-for service in "${services[@]}"; do
-    echo "Building $service..."
-    cd "$service"
-    if ! mvn clean package -DskipTests; then
-        echo "❌ Failed to build $service"
-        exit 1
-    fi
-    cd ..
-    echo "✅ $service built successfully"
-done
+echo "Building parent POM and all modules..."
+if ! mvn clean install -DskipTests; then
+    echo "❌ Failed to build parent POM and modules"
+    exit 1
+fi
 
 echo "✅ All microservices built successfully"
 
