@@ -1,11 +1,12 @@
 server:
   port: 8082
+  address: 0.0.0.0
 
 spring:
   application:
     name: user-service
   config:
-    import: "configserver:http://localhost:8888"
+    import: "configserver:http://config-server:8888"
   datasource:
     url: jdbc:postgresql://localhost:5432/userdb
     username: logistics_user
@@ -59,6 +60,7 @@ spring:
   config:
     activate:
       on-profile: production
+    import: "configserver:http://config-server:8888"
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/logistics_db}
     username: ${SPRING_DATASOURCE_USERNAME:logistics_user}
