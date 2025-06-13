@@ -7,6 +7,7 @@ import com.logistics.user.dto.UpdateUserProfileRequest;
 import com.logistics.user.dto.UserProfileDto;
 import com.logistics.user.entity.UserProfile;
 import com.logistics.user.repository.UserProfileRepository;
+import com.logistics.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
     private final UserActivityService userActivityService;
+    private final UserMapper userMapper;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public Page<UserProfileDto> getAllUsers(Pageable pageable) {
@@ -186,32 +188,6 @@ public class UserProfileService {
     }
 
     private UserProfileDto convertToDto(UserProfile userProfile) {
-        UserProfileDto dto = new UserProfileDto();
-        dto.setId(userProfile.getId());
-        dto.setAuthUserId(userProfile.getAuthUserId());
-        dto.setUsername(userProfile.getUsername());
-        dto.setEmail(userProfile.getEmail());
-        dto.setFirstName(userProfile.getFirstName());
-        dto.setLastName(userProfile.getLastName());
-        dto.setPhoneNumber(userProfile.getPhoneNumber());
-        dto.setProfilePictureUrl(userProfile.getProfilePictureUrl());
-        dto.setBio(userProfile.getBio());
-        dto.setCompany(userProfile.getCompany());
-        dto.setDepartment(userProfile.getDepartment());
-        dto.setPosition(userProfile.getPosition());
-        dto.setAddress(userProfile.getAddress());
-        dto.setCity(userProfile.getCity());
-        dto.setCountry(userProfile.getCountry());
-        dto.setPostalCode(userProfile.getPostalCode());
-        dto.setDateOfBirth(userProfile.getDateOfBirth());
-        dto.setStatus(userProfile.getStatus());
-        dto.setLanguage(userProfile.getLanguage());
-        dto.setTimezone(userProfile.getTimezone());
-        dto.setEmailVerified(userProfile.isEmailVerified());
-        dto.setPhoneVerified(userProfile.isPhoneVerified());
-        dto.setLastLogin(userProfile.getLastLogin());
-        dto.setCreatedAt(userProfile.getCreatedAt());
-        dto.setUpdatedAt(userProfile.getUpdatedAt());
-        return dto;
+        return userMapper.userProfileToUserProfileDto(userProfile);
     }
 }

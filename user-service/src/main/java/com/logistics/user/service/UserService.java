@@ -5,6 +5,7 @@ import com.logistics.common.exception.ResourceNotFoundException;
 import com.logistics.user.dto.UserDto;
 import com.logistics.user.entity.UserProfile;
 import com.logistics.user.repository.UserProfileRepository;
+import com.logistics.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,7 @@ public class UserService {
 
     private final UserProfileRepository userProfileRepository;
     private final UserActivityService userActivityService;
+    private final UserMapper userMapper;
 
     /**
      * Get all users.
@@ -192,21 +194,6 @@ public class UserService {
      * @return converted DTO
      */
     private UserDto convertToDto(UserProfile userProfile) {
-        UserDto dto = new UserDto();
-        dto.setId(userProfile.getId());
-        dto.setAuthUserId(userProfile.getAuthUserId());
-        dto.setUsername(userProfile.getUsername());
-        dto.setEmail(userProfile.getEmail());
-        dto.setFirstName(userProfile.getFirstName());
-        dto.setLastName(userProfile.getLastName());
-        dto.setPhoneNumber(userProfile.getPhoneNumber());
-        dto.setCompany(userProfile.getCompany());
-        dto.setPosition(userProfile.getPosition());
-        dto.setStatus(userProfile.getStatus());
-        dto.setEmailVerified(userProfile.isEmailVerified());
-        dto.setLastLogin(userProfile.getLastLogin());
-        dto.setCreatedAt(userProfile.getCreatedAt());
-        dto.setUpdatedAt(userProfile.getUpdatedAt());
-        return dto;
+        return userMapper.userProfileToUserDto(userProfile);
     }
 }

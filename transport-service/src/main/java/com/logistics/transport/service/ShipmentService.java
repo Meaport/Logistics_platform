@@ -7,6 +7,7 @@ import com.logistics.transport.dto.ShipmentDto;
 import com.logistics.transport.dto.UpdateShipmentRequest;
 import com.logistics.transport.entity.Shipment;
 import com.logistics.transport.repository.ShipmentRepository;
+import com.logistics.transport.mapper.TransportMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class ShipmentService {
 
     private final ShipmentRepository shipmentRepository;
+    private final TransportMapper transportMapper;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public Page<ShipmentDto> getAllShipments(Pageable pageable) {
@@ -187,27 +189,6 @@ public class ShipmentService {
     }
 
     private ShipmentDto convertToDto(Shipment shipment) {
-        ShipmentDto dto = new ShipmentDto();
-        dto.setId(shipment.getId());
-        dto.setTrackingNumber(shipment.getTrackingNumber());
-        dto.setSenderId(shipment.getSenderId());
-        dto.setReceiverId(shipment.getReceiverId());
-        dto.setOriginAddress(shipment.getOriginAddress());
-        dto.setDestinationAddress(shipment.getDestinationAddress());
-        dto.setWeightKg(shipment.getWeightKg());
-        dto.setVolumeM3(shipment.getVolumeM3());
-        dto.setDeclaredValue(shipment.getDeclaredValue());
-        dto.setStatus(shipment.getStatus());
-        dto.setPriority(shipment.getPriority());
-        dto.setVehicleId(shipment.getVehicleId());
-        dto.setDriverId(shipment.getDriverId());
-        dto.setPickupDate(shipment.getPickupDate());
-        dto.setDeliveryDate(shipment.getDeliveryDate());
-        dto.setEstimatedDelivery(shipment.getEstimatedDelivery());
-        dto.setShippingCost(shipment.getShippingCost());
-        dto.setNotes(shipment.getNotes());
-        dto.setCreatedAt(shipment.getCreatedAt());
-        dto.setUpdatedAt(shipment.getUpdatedAt());
-        return dto;
+        return transportMapper.shipmentToDto(shipment);
     }
 }
