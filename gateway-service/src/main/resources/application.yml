@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: gateway-service
+  config:
+    import: "configserver:http://config-server:8888"
   cloud:
     gateway:
       discovery:
@@ -110,6 +112,7 @@ spring:
   config:
     activate:
       on-profile: production
+    import: "configserver:http://config-server:8888"
   application:
     name: gateway-service
   cloud:
