@@ -104,3 +104,82 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.security: DEBUG
     com.logistics.gateway: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=2
+        - id: transport-service
+          uri: lb://transport-service
+          predicates:
+            - Path=/api/transport/**
+          filters:
+            - StripPrefix=2
+        - id: discovery-server
+          uri: http://discovery-server:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+        - id: discovery-server-static
+          uri: http://discovery-server:8761
+          predicates:
+            - Path=/eureka/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: ${CORS_ALLOWED_ORIGINS:*}
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
+jwt:
+  secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,gateway,routes,filters}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: ${LOGGING_LEVEL_ROOT:INFO}
+    org.springframework.security: INFO
+    com.logistics.gateway: ${LOGGING_LEVEL_COM_LOGISTICS:INFO}
+    root: ${LOGGING_LEVEL_ROOT:INFO}

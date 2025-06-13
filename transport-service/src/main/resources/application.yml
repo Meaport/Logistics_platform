@@ -53,3 +53,49 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 5000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/logistics_db}
+    username: ${SPRING_DATASOURCE_USERNAME:logistics_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:logistics_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,metrics}
+
+logging:
+  level:
+    com.logistics.transport: ${LOGGING_LEVEL_COM_LOGISTICS:INFO}
+    org.springframework.security: INFO
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000

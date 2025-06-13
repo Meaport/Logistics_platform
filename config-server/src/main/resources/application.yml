@@ -24,6 +24,31 @@ management:
 spring:
   config:
     activate:
+      on-profile: production
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+  profiles:
+    active: native
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,refresh}
+
+logging:
+  level:
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+
+---
+spring:
+  config:
+    activate:
       on-profile: railway
   cloud:
     config:

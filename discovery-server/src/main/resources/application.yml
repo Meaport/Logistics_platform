@@ -17,3 +17,38 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   server:
     enable-self-preservation: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  application:
+    name: discovery-server
+
+eureka:
+  instance:
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:discovery-server}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,refresh}
+
+logging:
+  level:
+    root: ${LOGGING_LEVEL_ROOT:INFO}
