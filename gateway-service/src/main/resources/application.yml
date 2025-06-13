@@ -6,6 +6,8 @@ spring:
     name: gateway-service
   config:
     import: "configserver:http://config-server:8888"
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     gateway:
       discovery:
@@ -115,6 +117,8 @@ spring:
     import: "configserver:http://config-server:8888"
   application:
     name: gateway-service
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     gateway:
       discovery:
