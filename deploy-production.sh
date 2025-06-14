@@ -270,25 +270,15 @@ echo "✅ Production Docker Compose file created"
 echo "📝 Creating database initialization script..."
 
 cat > init-db.sql << 'EOF'
--- Create separate databases for each service
-CREATE DATABASE authdb;
-CREATE DATABASE userdb;
-CREATE DATABASE transportdb;
+-- Create unified database for all services
+-- Note: For Digital Ocean managed database, this is handled automatically
+-- This script is for local development only
 
--- Grant permissions
-GRANT ALL PRIVILEGES ON DATABASE authdb TO logistics_user;
-GRANT ALL PRIVILEGES ON DATABASE userdb TO logistics_user;
-GRANT ALL PRIVILEGES ON DATABASE transportdb TO logistics_user;
-
--- Create extensions
-\c authdb;
+-- Create extensions in the main database
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-\c userdb;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-\c transportdb;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Create sample data tables (will be created by JPA/Hibernate)
+-- This is just for reference - actual tables created by Spring Boot
 EOF
 
 echo "✅ Database initialization script created"

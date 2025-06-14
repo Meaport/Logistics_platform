@@ -1,19 +1,26 @@
-# Global configuration for all services
 spring:
   datasource:
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:logistics_db}
+    username: ${DATABASE_USERNAME:logistics_user}
+    password: ${DATABASE_PASSWORD:logistics_pass}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
     show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+jwt:
+  secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://discovery-server:8761/eureka/}
     fetch-registry: true
     register-with-eureka: true
 
@@ -21,12 +28,20 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,metrics}
   endpoint:
     health:
       show-details: always
 
 logging:
   level:
-    com.logistics: DEBUG
-    org.springframework.security: DEBUG
+    com.logistics: ${LOGGING_LEVEL_COM_LOGISTICS:INFO}
+    org.springframework.security: INFO
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000

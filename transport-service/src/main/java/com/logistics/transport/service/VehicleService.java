@@ -6,6 +6,7 @@ import com.logistics.transport.dto.CreateVehicleRequest;
 import com.logistics.transport.dto.VehicleDto;
 import com.logistics.transport.entity.Vehicle;
 import com.logistics.transport.repository.VehicleRepository;
+import com.logistics.transport.mapper.TransportMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
+    private final TransportMapper transportMapper;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public Page<VehicleDto> getAllVehicles(Pageable pageable) {
@@ -164,24 +166,6 @@ public class VehicleService {
     }
 
     private VehicleDto convertToDto(Vehicle vehicle) {
-        VehicleDto dto = new VehicleDto();
-        dto.setId(vehicle.getId());
-        dto.setLicensePlate(vehicle.getLicensePlate());
-        dto.setVehicleType(vehicle.getVehicleType());
-        dto.setBrand(vehicle.getBrand());
-        dto.setModel(vehicle.getModel());
-        dto.setYear(vehicle.getYear());
-        dto.setCapacityKg(vehicle.getCapacityKg());
-        dto.setCapacityM3(vehicle.getCapacityM3());
-        dto.setStatus(vehicle.getStatus());
-        dto.setDriverId(vehicle.getDriverId());
-        dto.setCurrentLocation(vehicle.getCurrentLocation());
-        dto.setFuelType(vehicle.getFuelType());
-        dto.setFuelConsumption(vehicle.getFuelConsumption());
-        dto.setMaintenanceDate(vehicle.getMaintenanceDate());
-        dto.setInsuranceExpiry(vehicle.getInsuranceExpiry());
-        dto.setCreatedAt(vehicle.getCreatedAt());
-        dto.setUpdatedAt(vehicle.getUpdatedAt());
-        return dto;
+        return transportMapper.vehicleToDto(vehicle);
     }
 }

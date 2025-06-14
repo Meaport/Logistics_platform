@@ -1,18 +1,17 @@
 server:
   port: 8888
+  address: 0.0.0.0
 
 spring:
   application:
     name: config-server
-  config:
-    import: "configserver:http://localhost:8888"
+  profiles:
+    active: native
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config
-  profiles:
-    active: native
 
 management:
   endpoints:
@@ -24,18 +23,23 @@ management:
 spring:
   config:
     activate:
-      on-profile: railway
+      on-profile: production
+  application:
+    name: config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config
 
-server:
-  port: ${PORT:8888}
-
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,refresh
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,refresh}
+
+logging:
+  level:
+    root: ${LOGGING_LEVEL_ROOT:INFO}
