@@ -31,6 +31,8 @@ nano .env.digitalocean.local
 - `JWT_SECRET`: Generate a secure 32+ character secret
 
 ## 4. Deploy (5 minutes)
+
+### Standard Deployment
 ```bash
 # Make scripts executable
 chmod +x *.sh
@@ -40,6 +42,43 @@ chmod +x *.sh
 
 # Deploy to Digital Ocean
 ./deploy-digitalocean.sh
+```
+
+### Memory-Optimized Deployment (Recommended for servers with <4GB RAM)
+
+If you encounter "Killed" errors during Docker build, use one of these approaches:
+
+#### Option 1: Automated Memory-Optimized Deployment (Recommended)
+```bash
+chmod +x deploy-memory-optimized.sh
+./deploy-memory-optimized.sh
+```
+
+#### Option 2: Sequential Build Script
+```bash
+chmod +x build-sequential.sh
+./build-sequential.sh
+```
+
+#### Option 3: Test Config-Server First
+```bash
+chmod +x fix-config-server.sh
+./fix-config-server.sh
+```
+
+#### Option 4: Manual Sequential Build
+```bash
+# Build services one by one with memory limits
+export DOCKER_BUILDKIT=0
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local build --no-cache --memory=1g config-server
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local build --no-cache --memory=1g discovery-server
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local build --no-cache --memory=1g gateway-service
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local build --no-cache --memory=1g auth-service
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local build --no-cache --memory=1g user-service
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local build --no-cache --memory=1g transport-service
+
+# Start services with staggered startup
+docker-compose -f docker-compose.digitalocean.yml --env-file .env.digitalocean.local up -d
 ```
 
 ## 5. Verify (2 minutes)

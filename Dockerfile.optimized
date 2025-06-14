@@ -1,0 +1,38 @@
+# Optimized multi-stage Dockerfile with shared dependency caching
+FROM maven:3.9-amazoncorretto-17-debian AS dependencies
+WORKDIR /app
+
+# Copy only POM files first for dependency resolution
+COPY pom.xml .
+COPY config-server/pom.xml ./config-server/
+COPY discovery-server/pom.xml ./discovery-server/
+COPY gateway-service/pom.xml ./gateway-service/
+COPY auth-service/pom.xml ./auth-service/
+COPY user-service/pom.xml ./user-service/
+COPY transport-service/pom.xml ./transport-service/
+COPY common-lib/pom.xml ./common-lib/
+
+# Download dependencies for all modules (cached layer)
+RUN mvn dependency:go-offline -B
+
+# Build stage - copy source and build specific service
+FROM dependencies AS build
+ARG SERVICE_NAME
+WORKDIR /app
+
+# Copy all source code
+COPY . .
+
+# Set Maven memory options
+ENV MAVEN_OPTS="-Xmx1024m -XX:MaxMetaspaceSize=256m"
+
+# Build specific service
+RUN mvn clean package -DskipTests -pl ${SERVICE_NAME} -am
+
+# Runtime stage
+FROM openjdk:17-jdk-slim
+ARG SERVICE_NAME
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=build /app/${SERVICE_NAME}/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]

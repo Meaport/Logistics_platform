@@ -5,13 +5,13 @@ server:
 spring:
   application:
     name: config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config
-  profiles:
-    active: native
 
 management:
   endpoints:
@@ -43,23 +43,3 @@ management:
 logging:
   level:
     root: ${LOGGING_LEVEL_ROOT:INFO}
-
----
-spring:
-  config:
-    activate:
-      on-profile: railway
-  cloud:
-    config:
-      server:
-        native:
-          search-locations: classpath:/config
-
-server:
-  port: ${PORT:8888}
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,refresh

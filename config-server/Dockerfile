@@ -1,6 +1,10 @@
 FROM maven:3.9-amazoncorretto-17-debian AS build
 WORKDIR /app
 COPY . .
+
+# Set Maven memory options to prevent OOM
+ENV MAVEN_OPTS="-Xmx1024m -XX:MaxMetaspaceSize=256m"
+
 RUN mvn clean package -DskipTests -pl config-server -am
 
 FROM openjdk:17-jdk-slim
