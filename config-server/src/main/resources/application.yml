@@ -26,8 +26,6 @@ spring:
       on-profile: production
   application:
     name: config-server
-  profiles:
-    active: native
   cloud:
     config:
       server:
