@@ -18,10 +18,10 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "sh", "-c", "wget --quiet --tries=1 --spider http://localhost:8888/actuator/health || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 45s
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
 
   # Discovery Server
   discovery-server:
@@ -44,10 +44,10 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "sh", "-c", "wget --quiet --tries=1 --spider http://localhost:8761/actuator/health || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 60s
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 150s
 
   # Gateway Service
   gateway-service:
@@ -72,10 +72,10 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "sh", "-c", "wget --quiet --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 90s
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
 
   # Auth Service
   auth-service:

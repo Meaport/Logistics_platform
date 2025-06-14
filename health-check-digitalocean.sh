@@ -29,7 +29,7 @@ done
 
 echo ""
 echo "🐳 Container Status:"
-docker-compose -f docker-compose.digitalocean.yml ps
+docker compose -f docker-compose.digitalocean.yml ps
 
 echo ""
 if [ "$all_healthy" = true ]; then
