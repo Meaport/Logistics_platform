@@ -21,6 +21,7 @@ All 6 microservices are now running and healthy on the Digital Ocean server. Ext
 - **Root Cause**: `spring.profiles.active: native` defined in inactive production profile section (line 30:13)
 - **Error**: `InactiveConfigDataAccessException` - Spring Boot 3.x restriction violation
 - **Solution**: Removed conflicting `spring.profiles.active` from production profile in application.yml
+- **Deployment Fix**: Production server rebuilt containers with latest code (commit c3c0126)
 - **Result**: Config-server starts successfully, enabling all dependent services to initialize
 
 ### 2. Docker Compose Syntax Issues ✅ FIXED
