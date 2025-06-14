@@ -1,21 +1,21 @@
 # 🚀 Logistics Platform API Usage Guide
 
 ## 🌐 Server Information
-- **Production Server**: http://52.183.72.253:8080
-- **Eureka Dashboard**: http://52.183.72.253:8761
+- **Production Server**: http://209.38.244.176:8080
+- **Eureka Dashboard**: http://209.38.244.176:8761
 
 ## 🔐 Quick Authentication Test
 
 ### Admin Login
 ```bash
-curl -X POST http://52.183.72.253:8080/api/auth/login \
+curl -X POST http://209.38.244.176:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}'
 ```
 
 ### Get JWT Token (Automated)
 ```bash
-TOKEN=$(curl -s -X POST http://52.183.72.253:8080/api/auth/login \
+TOKEN=$(curl -s -X POST http://209.38.244.176:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}' | \
   jq -r '.data.token')
@@ -26,7 +26,7 @@ echo "Token: $TOKEN"
 
 ### Create Vehicle
 ```bash
-curl -X POST http://52.183.72.253:8080/api/transport/vehicles \
+curl -X POST http://209.38.244.176:8080/api/transport/vehicles \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -41,7 +41,7 @@ curl -X POST http://52.183.72.253:8080/api/transport/vehicles \
 
 ### Create Shipment
 ```bash
-curl -X POST http://52.183.72.253:8080/api/transport/shipments \
+curl -X POST http://209.38.244.176:8080/api/transport/shipments \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -57,20 +57,20 @@ curl -X POST http://52.183.72.253:8080/api/transport/shipments \
 
 ### Track Shipment (Public - No Auth Required)
 ```bash
-curl http://52.183.72.253:8080/api/transport/shipments/tracking/TRK17056789123456
+curl http://209.38.244.176:8080/api/transport/shipments/tracking/TRK17056789123456
 ```
 
 ## 👥 User Management
 
 ### Get User Profile
 ```bash
-curl -X GET http://52.183.72.253:8080/api/users/profile \
+curl -X GET http://209.38.244.176:8080/api/users/profile \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Update User Profile
 ```bash
-curl -X PUT http://52.183.72.253:8080/api/users/admin \
+curl -X PUT http://209.38.244.176:8080/api/users/admin \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -84,12 +84,12 @@ curl -X PUT http://52.183.72.253:8080/api/users/admin \
 
 ### Test All Service Health
 ```bash
-curl http://52.183.72.253:8080/actuator/health  # Gateway
-curl http://52.183.72.253:8081/actuator/health  # Auth
-curl http://52.183.72.253:8082/actuator/health  # User
-curl http://52.183.72.253:8083/actuator/health  # Transport
-curl http://52.183.72.253:8888/actuator/health  # Config
-curl http://52.183.72.253:8761/actuator/health  # Discovery
+curl http://209.38.244.176:8080/actuator/health  # Gateway
+curl http://209.38.244.176:8081/actuator/health  # Auth
+curl http://209.38.244.176:8082/actuator/health  # User
+curl http://209.38.244.176:8083/actuator/health  # Transport
+curl http://209.38.244.176:8888/actuator/health  # Config
+curl http://209.38.244.176:8761/actuator/health  # Discovery
 ```
 
 ## 🔧 Default Credentials
@@ -97,6 +97,6 @@ curl http://52.183.72.253:8761/actuator/health  # Discovery
 - **Admin Password**: `admin123`
 
 ## 🌍 External Access Note
-After configuring Digital Ocean firewall rules, replace `52.183.72.253` with your actual server IP address in all API calls above.
+After configuring Digital Ocean firewall rules, all API calls above use your actual server IP address (209.38.244.176).
 
 For complete API documentation, see `API-DOCUMENTATION.md`.

@@ -31,17 +31,17 @@ Add the following inbound rules:
 After firewall configuration, test external access:
 
 ```bash
-# Replace with your actual Digital Ocean IP
-curl http://52.183.72.253:8080/actuator/health
-curl http://52.183.72.253:8081/actuator/health
-curl http://52.183.72.253:8082/actuator/health
-curl http://52.183.72.253:8083/actuator/health
+# Test with your actual Digital Ocean IP
+curl http://209.38.244.176:8080/actuator/health
+curl http://209.38.244.176:8081/actuator/health
+curl http://209.38.244.176:8082/actuator/health
+curl http://209.38.244.176:8083/actuator/health
 ```
 
 ### 5. Access Web Dashboards
 
-- **Eureka Service Discovery**: http://52.183.72.253:8761
-- **Main API Gateway**: http://52.183.72.253:8080
+- **Eureka Service Discovery**: http://209.38.244.176:8761
+- **Main API Gateway**: http://209.38.244.176:8080
 
 ## Security Considerations
 
@@ -63,15 +63,15 @@ If external access doesn't work:
 ### Test from External Machine
 ```bash
 # Test main gateway
-curl http://52.183.72.253:8080/actuator/health
+curl http://209.38.244.176:8080/actuator/health
 
 # Test authentication
-curl -X POST http://52.183.72.253:8080/api/auth/login \
+curl -X POST http://209.38.244.176:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}'
 
 # Test public tracking (no auth required)
-curl http://52.183.72.253:8080/api/transport/shipments/tracking/TRK17056789123456
+curl http://209.38.244.176:8080/api/transport/shipments/tracking/TRK17056789123456
 ```
 
 ### Test from Server (Local)
