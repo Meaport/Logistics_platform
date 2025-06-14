@@ -1,8 +1,9 @@
 # 🚀 Logistics Platform API Usage Guide
 
 ## 🌐 Server Information
-- **Production Server**: http://52.183.72.253:8080
-- **Eureka Dashboard**: http://52.183.72.253:8761
+- **Production Server**: http://52.183.72.253:8080 ✅ ONLINE
+- **Eureka Dashboard**: http://52.183.72.253:8761 ✅ ACCESSIBLE
+- **External Connectivity**: ✅ FULLY OPERATIONAL
 
 ## 🔐 Quick Authentication Test
 
@@ -96,7 +97,19 @@ curl http://52.183.72.253:8761/actuator/health  # Discovery
 - **Admin Username**: `admin`
 - **Admin Password**: `admin123`
 
-## 🌍 External Access Note
-After configuring Digital Ocean firewall rules, all API calls above use your actual server IP address (52.183.72.253).
+## 🌍 External Access Status
+✅ **CONFIRMED WORKING**: Digital Ocean firewall correctly applied to "logistics-platform-server" droplet. All API endpoints are accessible externally using server IP address (52.183.72.253).
+
+**PowerShell Test Commands (Confirmed Working)**:
+```powershell
+# Test main services
+Invoke-RestMethod -Uri "http://52.183.72.253:8080/actuator/health"
+Invoke-RestMethod -Uri "http://52.183.72.253:8081/actuator/health"
+Invoke-RestMethod -Uri "http://52.183.72.253:8082/actuator/health"
+Invoke-RestMethod -Uri "http://52.183.72.253:8083/actuator/health"
+
+# Access Eureka dashboard
+Invoke-WebRequest -Uri "http://52.183.72.253:8761"
+```
 
 For complete API documentation, see `API-DOCUMENTATION.md`.

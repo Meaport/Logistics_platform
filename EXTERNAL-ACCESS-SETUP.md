@@ -53,10 +53,18 @@ curl http://52.183.72.253:8083/actuator/health
 ## Troubleshooting
 
 If external access doesn't work:
-1. Verify firewall rules are applied to the correct droplet
+1. **CRITICAL**: Verify firewall rules are applied to the correct droplet name
+   - Common issue: Firewall applied to "logistics-platform" instead of "logistics-platform-server"
+   - Solution: In Digital Ocean → Droplets → Select correct server → Networking → Apply firewall
 2. Check Digital Ocean networking logs
 3. Verify services are bound to 0.0.0.0 (already configured)
 4. Test local access first: `curl http://localhost:8080/actuator/health`
+
+### Common Droplet Name Mismatch Issue
+- **Problem**: Firewall configured correctly but applied to wrong droplet
+- **Symptoms**: Services work locally but external access fails
+- **Solution**: Ensure firewall is applied to the actual server droplet name
+- **Verification**: Check droplet name in Digital Ocean dashboard matches firewall assignment
 
 ## Quick Verification Commands
 
